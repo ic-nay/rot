@@ -1,27 +1,66 @@
+/*
+THE PLAN
+
+Really quite simple
+
+1. We've got some input!
+2. Is there any standard input? x
+3. How many arguments are there? x
+4. If there are too many, fail out. x
+5. If there aren't too many, pass along the necessary information to the rot function
+6. rot
+7. profit
+
+Things to look at
+- getopt (https://www.man7.org/linux/man-pages/man3/getopt.3.html)
+
+Other features worth considering
+- Exclusions
+- Case conversion
+
+*/
+
 #include <stdio.h>
+#include <stdbool.h>
+#include <unistd.h>
 
 void printHelp(){
-    printf("hellp!\n");
+    printf("help!\n");
 }
 
-void parseArgs(int argcount, char* args[]){
-
+void parseArgs(int argcount, char* args[], bool stdinPresent){
+    
 }
 
 int main(int argcount, char* args[]){
-    if (argcount <= 1){
+
+
+    //Used for deciding which input will be used depending on whether or not this is being piped
+    bool stdinPresent = true;
+
+    if (isatty(fileno(stdin)) == 1){
+        printf("Nothing in STDIN!\n");
+        stdinPresent = false;
+    }
+
+    
+    
+    if (argcount <= 1 && stdinPresent == false){
+        //Too few args, default help screen
         printHelp();
     }
     else if (argcount > 4){
+        //Too many args
         perror("Too many arguments input into rot!\n");
     }
     else {
-        for (int i = 1; i < argcount; i ++){
+        for (int i = 0; i < argcount; i ++){
             printf("Arg %d: %s\n", i, args[i]);
         }
-        parseArgs(argcount, args);
+        parseArgs(argcount, args, stdinPresent);
     }
-    if (stdin == NULL){
+
+    if (stdinPresent == false){
         printf("Null rn\n");
     }
     else {
