@@ -15,6 +15,6 @@ gdkkn vnqkc
 
 Example 2:
 ```
-> rot -o 1 -r gdkkn vnqkc
+> rot -o 1 -r "gdkkn vnqkc"
 hello world
 ```
