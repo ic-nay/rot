@@ -1,19 +1,3 @@
-/*
-THE PLAN
-
-Really quite simple
-
-1. We've got some input!
-2. Is there any standard input? x
-3. How many arguments are there? x
-4. If there are too many, fail out. x
-5. If there aren't too many, pass along the necessary information to the rot function
-5.5. If there isn't any input, just arguments. Well honestly that's probably fine. Idk. We'll see.
-6. rot
-7. profit
-
-*/
-
 #include <stdio.h>
 #include <string.h> //strlen
 #include <stdlib.h> //atoi
@@ -30,7 +14,7 @@ void printHelp(){
     printf("-o    The offset by which text will be rotated.\n");
     printf("-r    Reverses the direction the offset is applied. By default, subtracts.\n");
     printf("-h    Prints this help menu. Prevents any other output.\n");
-    exit(0);
+    exit(0); //Exits to prevent any other output
 }
 
 void rot(char c, int offset, bool reversed){
@@ -50,19 +34,23 @@ void rot(char c, int offset, bool reversed){
     }
 
     if (isletter){
-
         char newchar;
 
         newchar = reversed ? c + offset : c - offset;
 
+        //Deals with wraparound
+
         if (newchar > upper_limit){
             newchar = lower_limit + (newchar-upper_limit);
         }
+
         else if (newchar < lower_limit){
             newchar = upper_limit - (lower_limit - newchar);
         }
+
         printf("%c", newchar);
     }
+
     else {
         printf("%c", c);
     }
