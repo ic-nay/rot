@@ -25,8 +25,39 @@ void printHelp(){
     printf("help!\n");
 }
 
-char rot(char c, int offset, bool reversed){
-    printf("Offsetting %c by %d\n", c, offset);
+void rot(char c, int offset, bool reversed){
+
+    int lower_limit, upper_limit;
+    bool isletter = false;
+
+    if ((c >= 65)&&(c <= 90)){
+        lower_limit = 65;
+        upper_limit = 90;
+        isletter = true;
+    }
+    else if ((c >= 97)&&(c <= 122)){
+        lower_limit = 97;
+        upper_limit = 122;
+        isletter = true;
+    }
+
+    if (isletter){
+
+        char newchar;
+
+        newchar = reversed ? c + offset : c - offset;
+
+        if (newchar > upper_limit){
+            newchar = lower_limit + (newchar-upper_limit);
+        }
+        else if (newchar < lower_limit){
+            newchar = upper_limit - (lower_limit - newchar);
+        }
+        printf("%c", newchar);
+    }
+    else {
+        printf("%c", c);
+    }
 
 }
 
@@ -41,7 +72,6 @@ int main(int argcount, char* args[]){
     bool stdinPresent = true;
 
     if (isatty(fileno(stdin)) == 1){
-        printf("Nothing in STDIN!\n");
         stdinPresent = false;
     }
     
@@ -49,19 +79,16 @@ int main(int argcount, char* args[]){
         //Too few args, default help screen
         printHelp();
     }
-    else if (argcount > 4){
+    else if (argcount > 5){
         //Too many args
         perror("Too many arguments input into rot!\n");
     }
     else {
-        for (int i = 0; i < argcount; i ++){
-            printf("Arg %d: %s\n", i, args[i]);
-        }
         
         while((opt = getopt(argcount, args, "o:hr")) != -1){  
             switch(opt) {
                 case 'o':
-                    offset = atoi(optarg);  
+                    offset = atoi(optarg) % 26; //Makes life easier
                     break;
                 case 'r':
                     reversed = true;
@@ -72,7 +99,6 @@ int main(int argcount, char* args[]){
                     break;
             }
         }
-        printf("rot: %d\n", offset);
 
         if (((optind - argcount) == 0)){
             char nextChar;
@@ -101,6 +127,7 @@ int main(int argcount, char* args[]){
                 }
                 
             }
+            printf("\n");
         }
 
     }
