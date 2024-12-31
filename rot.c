@@ -12,16 +12,10 @@ Really quite simple
 6. rot
 7. profit
 
-Things to look at
-- getopt (https://www.man7.org/linux/man-pages/man3/getopt.3.html)
-
-Other features worth considering
-- Exclusions
-- Case conversion
-
 */
 
 #include <stdio.h>
+#include <string.h> //strlen
 #include <stdlib.h> //atoi
 #include <stdbool.h>
 #include <unistd.h> //isatty
@@ -31,10 +25,16 @@ void printHelp(){
     printf("help!\n");
 }
 
+char rot(char c, int offset, bool reversed){
+    printf("Offsetting %c by %d\n", c, offset);
+
+}
+
 int main(int argcount, char* args[]){
 
     int opt;
-    int rot = 13;
+    int offset = 13;
+    bool reversed = false;
 
 
     //Used for deciding which input will be used depending on whether or not this is being piped
@@ -58,19 +58,32 @@ int main(int argcount, char* args[]){
             printf("Arg %d: %s\n", i, args[i]);
         }
         
-        while((opt = getopt(argcount, args, "r:")) != -1){  
+        while((opt = getopt(argcount, args, "o:hr")) != -1){  
             switch(opt) {
+                case 'o':
+                    offset = atoi(optarg);  
+                    break;
                 case 'r':
-                    rot = atoi(optarg);  
+                    reversed = true;
+                    break;
+                case 'h':
+                    printHelp();
+                    exit(0);
                     break;
             }
         }
-        printf("rot: %d\n", rot);
-        // optind is for the extra arguments 
-        // which are not parsed
-        if (((optind - argcount) == 0)){
-            if (stdinPresent){
+        printf("rot: %d\n", offset);
 
+        if (((optind - argcount) == 0)){
+            char nextChar;
+
+            if (stdinPresent){
+                nextChar = getchar();
+                while (nextChar != EOF){
+                    rot(nextChar, offset, reversed);
+                    nextChar = getchar();
+                }
+                exit(0);
             }
             else {
                 perror("Nothing to rotate!");
@@ -78,8 +91,15 @@ int main(int argcount, char* args[]){
             }
         }
         else {
+            int i;
+            int len;
             for(; optind < argcount; optind++){
-                printf("extra arguments: %s\n", args[optind]);  
+                //There are better, more efficient ways to do this, which I cannot be bothered with for a silly toy
+                len = strlen(args[optind]);
+                for (i = 0; i < len; i ++){
+                    rot(args[optind][i], offset, reversed);
+                }
+                
             }
         }
 
