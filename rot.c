@@ -22,7 +22,15 @@ Really quite simple
 #include <getopt.h>
 
 void printHelp(){
-    printf("help!\n");
+    printf("Usage: rot [OPTION] [TEXT]");
+    printf("rot allows you to rotate a string of text, like a ceasar cipher!\n");
+    printf("Example: rot -o 2 'hello world'\n");
+    printf("Example: rot -o 2 -r 'fcjjm umpjb'\n");
+    printf("Options:\n");
+    printf("-o    The offset by which text will be rotated.\n");
+    printf("-r    Reverses the direction the offset is applied. By default, subtracts.\n");
+    printf("-h    Prints this help menu. Prevents any other output.\n");
+    exit(0);
 }
 
 void rot(char c, int offset, bool reversed){
@@ -79,8 +87,8 @@ int main(int argcount, char* args[]){
         //Too few args, default help screen
         printHelp();
     }
-    else if (argcount > 5){
-        //Too many args
+    else if (argcount > 6){
+        //The maximum number of flags and arguments which can be put into this.
         perror("Too many arguments input into rot!\n");
     }
     else {
