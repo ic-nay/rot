@@ -45,7 +45,7 @@ void rot(char c, int offset, bool reversed){
         }
 
         else if (newchar < lower_limit){
-            newchar = upper_limit - (lower_limit - newchar);
+            newchar = upper_limit - (lower_limit - newchar) + 1;
         }
 
         printf("%c", newchar);
