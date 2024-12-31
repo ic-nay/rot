@@ -6,7 +6,7 @@
 #include <getopt.h>
 
 void printHelp(){
-    printf("Usage: rot [OPTION] [TEXT]");
+    printf("Usage: rot [OPTION] [TEXT]\n");
     printf("rot allows you to rotate a string of text, like a ceasar cipher!\n");
     printf("Example: rot -o 2 'hello world'\n");
     printf("Example: rot -o 2 -r 'fcjjm umpjb'\n");
@@ -84,7 +84,7 @@ int main(int argcount, char* args[]){
         while((opt = getopt(argcount, args, "o:hr")) != -1){  
             switch(opt) {
                 case 'o':
-                    offset = atoi(optarg) % 26; //Makes life easier
+                    offset = atoi(optarg) % 26; //Ensures all offsets fall between 0 and 25.
                     break;
                 case 'r':
                     reversed = true;
@@ -95,10 +95,10 @@ int main(int argcount, char* args[]){
                     break;
             }
         }
-
+        //Checks if there are any additional arguments (i.e. text to be rotated).
         if (((optind - argcount) == 0)){
             char nextChar;
-
+            
             if (stdinPresent){
                 nextChar = getchar();
                 while (nextChar != EOF){
