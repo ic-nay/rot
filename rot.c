@@ -19,17 +19,17 @@ void printHelp(){
 
 void rot(char c, int offset, bool reversed){
 
-    int lower_limit, upper_limit;
+    char lower_limit, upper_limit;
     bool isletter = false;
 
-    if ((c >= 65)&&(c <= 90)){
-        lower_limit = 65;
-        upper_limit = 90;
+    if ((c >= 'A')&&(c <= 'Z')){
+        lower_limit = 'A';
+        upper_limit = 'Z';
         isletter = true;
     }
-    else if ((c >= 97)&&(c <= 122)){
-        lower_limit = 97;
-        upper_limit = 122;
+    else if ((c >= 'a')&&(c <= 'z')){
+        lower_limit = 'a';
+        upper_limit = 'z';
         isletter = true;
     }
 
@@ -41,7 +41,7 @@ void rot(char c, int offset, bool reversed){
         //Deals with wraparound
 
         if (newchar > upper_limit){
-            newchar = lower_limit + (newchar-upper_limit);
+            newchar = lower_limit + (newchar-upper_limit) - 1;
         }
 
         else if (newchar < lower_limit){
